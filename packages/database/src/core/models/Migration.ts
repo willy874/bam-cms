@@ -6,7 +6,7 @@ export default abstract class Migration {
   abstract up(): void | Promise<void>;
   abstract down(): void | Promise<void>;
 
-  async create(name: string, callback: (table: TableBlueprint) => void | Promise<void>) {
+  async create(name: string, callback?: (table: TableBlueprint) => void | Promise<void>) {
     const table = new TableBlueprint().name(name);
     await callback(table);
     return this._info.concat({
@@ -16,7 +16,7 @@ export default abstract class Migration {
     });
   }
 
-  async update(name: string, callback: (table: TableBlueprint) => void | Promise<void>) {
+  async alter(name: string, callback?: (table: TableBlueprint) => void | Promise<void>) {
     const table = new TableBlueprint().name(name);
     await callback(table);
     return this._info.concat({
@@ -26,7 +26,7 @@ export default abstract class Migration {
     });
   }
 
-  async drop(name: string, callback: (table: TableBlueprint) => void | Promise<void>) {
+  async drop(name: string, callback?: (table: TableBlueprint) => void | Promise<void>) {
     const table = new TableBlueprint().name(name);
     await callback(table);
     return this._info.concat({

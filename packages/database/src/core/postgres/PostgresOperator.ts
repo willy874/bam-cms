@@ -1,4 +1,4 @@
-import { events, pg } from '../../libs';
+import { events, pg } from '@/libs';
 import { Connection, SqlOperator } from '../models';
 
 const { EventEmitter } = events;

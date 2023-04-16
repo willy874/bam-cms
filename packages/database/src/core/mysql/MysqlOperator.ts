@@ -1,4 +1,4 @@
-import { events, isSet, mysql2 } from '../../libs';
+import { events, isSet, mysql2 } from '@/libs';
 import { ColumnSchema, Connection, SqlOperator } from '../models';
 import RESERVED_KEYWORDS from './reserved-keywords';
 
@@ -9,13 +9,15 @@ function filterInjection(name) {
 }
 
 function getColumnSql(column: ColumnSchema) {
-  const { name, type, length, binary, decimal, autoIncrementing, precision, autoDefault, ...rest } = column;
-  let sql = `${filterInjection(name)} ${type?.toUpperCase()}`;
+  const { name, type, length, binary, decimal, autoIncrementing, precision, autoDefault, primary, ...rest } = column;
+  const columnName = filterInjection(name);
+  let sql = `${columnName} ${type?.toUpperCase()}`;
   if (length) sql += `(${length})`;
   if (binary) sql += ' BINARY';
   if (decimal) sql += `(${decimal})`;
   if (autoIncrementing) sql += ' AUTO_INCREMENT';
   if (precision) sql += `(${precision})`;
+  if (primary) sql += ` PRIMARY KEY (${primary})`;
   if (rest.nullable) sql += ' NULL';
   if (rest.default && !rest.nullable) sql += ` DEFAULT ${rest.default}`;
   if (autoDefault && !isSet(rest.default)) sql += ' DEFAULT CURRENT_TIMESTAMP';
@@ -48,7 +50,7 @@ export default class MysqlOperator extends EventEmitter implements SqlOperator {
 
   query<T extends QueryResults>(sql: string, options: Omit<QueryOptions, 'sql'> = {}): Promise<T> {
     return new Promise((resolve, reject) => {
-      const query = this._connection.query<T>({ ...options, sql }, (error, results, fields) => {
+      const query = this._connection.query<T>({ ...options, sql }, (error, results) => {
         if (error) {
           reject(error);
         } else {
@@ -66,13 +68,19 @@ export default class MysqlOperator extends EventEmitter implements SqlOperator {
     const tableName = filterInjection(name);
     const existQuery = `CREATE TABLE IF NOT EXISTS ${tableName}`;
     const columnsQuery = columns.map((column) => getColumnSql(column));
-    return this.query(`${existQuery} (\n  ${columnsQuery.join(',\n  ')}\n)`).then(() => Promise.resolve());
+    return this.query(`${existQuery} (\n  ${columnsQuery.join(',\n  ')}\n)`).then((result) => {
+      console.info(result);
+      return Promise.resolve();
+    });
   }
 
   dorp(name: string): Promise<void> {
     const tableName = filterInjection(name);
     const existQuery = `DROP TABLE IF EXISTS ${tableName};`;
     const dropQuery = `DROP TABLE ${tableName};`;
-    return this.query(`${existQuery}\n${dropQuery}`).then(() => Promise.resolve());
+    return this.query(`${existQuery}\n${dropQuery}`).then((result) => {
+      console.info(result);
+      return Promise.resolve();
+    });
   }
 }

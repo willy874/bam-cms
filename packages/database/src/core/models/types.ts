@@ -14,6 +14,7 @@ export interface ColumnSchemaConfig {
   autoIncrementing?: boolean;
   precision?: number;
   autoDefault?: boolean;
+  primary?: boolean;
 }
 
 export type ColumnsTypeConfig = NumberType | StringType | DateType; // | BooleanType | EnumType;
@@ -28,7 +29,7 @@ export interface TableSchema {
 export type TableOperator = 'CREATE' | 'ALTER' | 'DROP';
 
 export interface Connection {
-  username: string;
+  user: string;
   password: string;
   host: string;
   port: number;

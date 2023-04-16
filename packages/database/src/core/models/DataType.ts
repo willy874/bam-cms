@@ -5,6 +5,7 @@ export class BaseType<D = unknown> {
   protected _default: null | D = null;
   protected _nullable = false;
   protected _comment = '';
+  protected _primary = false;
 
   index() {
     this._index = 'auto';
@@ -32,6 +33,11 @@ export class BaseType<D = unknown> {
    */
   comment(value: string) {
     this._comment = value;
+    return this;
+  }
+
+  primary() {
+    this._primary = true;
     return this;
   }
 
