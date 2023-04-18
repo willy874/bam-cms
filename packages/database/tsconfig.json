@@ -1,14 +1,21 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "module": "commonjs",
     "rootDir": ".",
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     },
     "types": ["node", "jest"]
   },
   "extends": "../../tsconfig.base.json",
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["src/**/*", "tests/**/*"],
+  "ts-node": {
+    "esm": true,
+    "compilerOptions": {
+      "module": "nodenext"
+    }
+  }
 }

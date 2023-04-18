@@ -2,37 +2,21 @@ import TableBlueprint from './TableBlueprint';
 import { MigrationInfo } from './types';
 
 export default abstract class Migration {
-  protected _info: MigrationInfo[] = [];
+  abstract name: string;
   abstract up(): void | Promise<void>;
   abstract down(): void | Promise<void>;
 
-  async create(name: string, callback?: (table: TableBlueprint) => void | Promise<void>) {
-    const table = new TableBlueprint().name(name);
-    await callback(table);
-    return this._info.concat({
-      action: 'CREATE',
-      table: table.config.name,
-      columns: table.config.columns,
-    });
+  constructor(private blueprint: TableBlueprint) {}
+
+  async create(name: string, callback: (table: TableBlueprint) => void | Promise<void>) {
+    return await callback(this.blueprint.name(name));
   }
 
-  async alter(name: string, callback?: (table: TableBlueprint) => void | Promise<void>) {
-    const table = new TableBlueprint().name(name);
-    await callback(table);
-    return this._info.concat({
-      action: 'ALTER',
-      table: table.config.name,
-      columns: table.config.columns,
-    });
+  async alter(name: string, callback: (table: TableBlueprint) => void | Promise<void>) {
+    return await callback(this.blueprint);
   }
 
-  async drop(name: string, callback?: (table: TableBlueprint) => void | Promise<void>) {
-    const table = new TableBlueprint().name(name);
-    await callback(table);
-    return this._info.concat({
-      action: 'DROP',
-      table: table.config.name,
-      columns: [],
-    });
+  async drop(name: string, callback: (table: TableBlueprint) => void | Promise<void>) {
+    return await callback(this.blueprint);
   }
 }

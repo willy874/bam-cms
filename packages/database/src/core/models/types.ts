@@ -19,7 +19,7 @@ export interface ColumnSchemaConfig {
 
 export type ColumnsTypeConfig = NumberType | StringType | DateType; // | BooleanType | EnumType;
 
-export type ColumnSchema = Omit<ColumnSchemaConfig, 'index'> & { name: string };
+export type ColumnSchema = Omit<ColumnSchemaConfig, 'index'>;
 
 export interface TableSchema {
   name: string;
@@ -46,5 +46,6 @@ export interface SqlOperator {
 export interface MigrationInfo {
   action: TableOperator;
   table: string;
-  columns: ColumnSchema[];
+  column: string;
+  config: ColumnSchema;
 }

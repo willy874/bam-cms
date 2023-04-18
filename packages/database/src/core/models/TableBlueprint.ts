@@ -1,38 +1,49 @@
 import { ColumnsTypeConfig, ColumnSchema } from './types';
 
-export default class TableBlueprint {
-  protected _columns: ColumnSchema[] = [];
-  protected _name = '';
+type TableSchema = {
+  [column: string]: ColumnSchema[];
+};
 
-  name(value: string) {
-    this._name = value;
+type InfoBlueprint = {
+  [table: string]: TableSchema;
+};
+
+export default class TableBlueprint {
+  protected _info: InfoBlueprint = {};
+  protected _table = '';
+  protected _action = '';
+
+  name(tableName: string) {
+    this._table = tableName;
     return this;
   }
 
-  column(name: string, value: ColumnsTypeConfig) {
+  column(columnName: string, value: ColumnsTypeConfig) {
+    const tableName = this._table;
     const { index, ...config } = value.config;
+    if (!this._info[columnName]) {
+      this._info[columnName] = {};
+    }
+    if (!this._info[columnName][tableName]) {
+      this._info[columnName][tableName] = [];
+    }
+    const column = this._info[columnName][tableName];
     if (index === 'auto') {
-      this._columns.push({ name, ...config });
+      column.push(config);
     } else {
-      this._columns.splice(index, 0, { name, ...config });
+      column.splice(index, 0, config);
     }
     return this;
   }
 
-  schema(data: { [key: string]: ColumnsTypeConfig }) {
+  schema(data: { [column: string]: ColumnsTypeConfig }) {
     Object.entries(data).forEach(([key, value]) => {
       this.column(key, value);
     });
     return this;
   }
 
-  get config() {
-    if (this._name === '') {
-      throw new Error('Table name is required');
-    }
-    return {
-      name: this._name,
-      columns: this._columns,
-    };
+  protected get config() {
+    return this._info;
   }
 }

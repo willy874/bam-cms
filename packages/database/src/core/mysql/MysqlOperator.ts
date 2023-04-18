@@ -2,7 +2,7 @@ import { events, isSet, mysql2 } from '@/libs';
 import { ColumnSchema, Connection, SqlOperator } from '../models';
 import RESERVED_KEYWORDS from './reserved-keywords';
 
-function filterInjection(name) {
+function filterInjection(name: string) {
   return RESERVED_KEYWORDS.split(',').some((keyword) => new RegExp(`\\s+${keyword}\\s+`))
     ? `\`${name.replace(/`/g, '')}\``
     : name;
@@ -34,7 +34,7 @@ type ResultSetHeader = mysql2.ResultSetHeader;
 type QueryResults = RowDataPacket[][] | RowDataPacket[] | OkPacket | OkPacket[] | ResultSetHeader;
 
 export default class MysqlOperator extends EventEmitter implements SqlOperator {
-  private _connection: MysqlConnection;
+  private _connection = {} as MysqlConnection;
 
   connect(options: Partial<Connection>): Promise<void> {
     this._connection = mysql2.createConnection(options);
@@ -43,7 +43,7 @@ export default class MysqlOperator extends EventEmitter implements SqlOperator {
   }
 
   disconnect(): Promise<void> {
-    this._connection.end();
+    this._connection.destroy();
     this.emit('disconnect', this._connection);
     return Promise.resolve();
   }

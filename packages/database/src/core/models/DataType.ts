@@ -1,7 +1,7 @@
 import { ColumnSchemaConfig } from './types';
 
 export class BaseType<D = unknown> {
-  protected _index: number | 'auto';
+  protected _index: number | 'auto' = 'auto';
   protected _default: null | D = null;
   protected _nullable = false;
   protected _comment = '';
@@ -56,7 +56,7 @@ export class StringType extends BaseType<string> {
   private _length: number;
   private _binary: boolean;
 
-  constructor(type, length?: number, binary?: boolean) {
+  constructor(type: string, length?: number, binary?: boolean) {
     super();
     this._type = type || 'varchar';
     this._length = length || 255;
@@ -106,7 +106,7 @@ export class NumberType extends BaseType<number> {
 export class DateType extends BaseType<number> {
   private _type: string;
   private _precision: number;
-  private _autoDefault: boolean;
+  private _autoDefault = false;
 
   constructor(type: string, precision?: number) {
     super();

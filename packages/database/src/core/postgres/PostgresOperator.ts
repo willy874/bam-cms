@@ -9,7 +9,7 @@ type QueryResult<T extends QueryResultRow = any> = pg.QueryResult<T>;
 type QueryConfig<T extends any[] = any[]> = pg.QueryConfig<T>;
 
 export default class PostgresOperator extends EventEmitter implements SqlOperator {
-  private _client: Client;
+  private _client = {} as Client;
 
   connect(options: Partial<Connection>): Promise<void> {
     this._client = new Client(options);
