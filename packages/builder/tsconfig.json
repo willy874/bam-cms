@@ -7,15 +7,9 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node"]
+    "types": ["node", "jest"]
   },
   "extends": "../../tsconfig.base.json",
   "exclude": ["node_modules"],
-  "include": ["src/**/*", "tests/**/*"],
-  "ts-node": {
-    "esm": true,
-    "compilerOptions": {
-      "module": "nodenext"
-    }
-  }
+  "include": ["src/**/*"],
 }
