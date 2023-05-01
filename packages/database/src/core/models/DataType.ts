@@ -3,12 +3,17 @@ import { ColumnSchemaConfig } from './types';
 export class BaseType<D = unknown> {
   protected _index: number | 'auto' = 'auto';
   protected _default: null | D = null;
-  protected _nullable = false;
   protected _comment = '';
-  protected _primary = false;
+  protected _nullable = false;
+  protected _primaryKey = false;
+  protected _foreignKey = false;
 
-  index() {
-    this._index = 'auto';
+  index(index?: number) {
+    if (typeof index === 'undefined') {
+      this._index = 'auto';
+    } else {
+      this._index = index;
+    }
     return this;
   }
 
@@ -36,8 +41,13 @@ export class BaseType<D = unknown> {
     return this;
   }
 
-  primary() {
-    this._primary = true;
+  primaryKey() {
+    this._primaryKey = true;
+    return this;
+  }
+
+  foreignKey() {
+    this._foreignKey = true;
     return this;
   }
 
@@ -47,6 +57,8 @@ export class BaseType<D = unknown> {
       default: this._default,
       nullable: this._nullable,
       comment: this._comment,
+      primary: this._primaryKey,
+      foreign: this._foreignKey,
     };
   }
 }
@@ -126,39 +138,5 @@ export class DateType extends BaseType<number> {
       precision: this._precision,
       autoDefault: this._autoDefault,
     };
-  }
-}
-
-export default class DataType {
-  static string(length = 255, binary = false) {
-    return new StringType('varchar', length, binary);
-  }
-
-  static char(length = 255, binary = false) {
-    return new StringType('char', length, binary);
-  }
-
-  static text(type: 'tiny' | 'medium' | 'long' | 'text' = 'text') {
-    return new StringType(type);
-  }
-
-  static json(type: 'jsonb' | 'json' = 'json') {
-    return new StringType(type);
-  }
-
-  static number(length = 11, decimal = 0) {
-    return new NumberType(length, decimal);
-  }
-
-  static integer(length = 11) {
-    return new NumberType(length);
-  }
-
-  static float(length = 11, decimal = 10) {
-    return new NumberType(length, decimal);
-  }
-
-  static date(type = 'datetime', precision = 0) {
-    return new DateType(type, precision);
   }
 }

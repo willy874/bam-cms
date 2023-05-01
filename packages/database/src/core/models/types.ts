@@ -15,18 +15,12 @@ export interface ColumnSchemaConfig {
   precision?: number;
   autoDefault?: boolean;
   primary?: boolean;
+  foreign?: boolean;
 }
+
+export type ColumnSchema = ColumnSchemaConfig & { name: string };
 
 export type ColumnsTypeConfig = NumberType | StringType | DateType; // | BooleanType | EnumType;
-
-export type ColumnSchema = Omit<ColumnSchemaConfig, 'index'>;
-
-export interface TableSchema {
-  name: string;
-  columns: ColumnSchema[];
-}
-
-export type TableOperator = 'CREATE' | 'ALTER' | 'DROP';
 
 export interface Connection {
   user: string;
@@ -41,11 +35,4 @@ export interface SqlOperator {
   connect(options: Partial<Connection>): Promise<void>;
   disconnect(): Promise<void>;
   query(sql: string, options: any): Promise<any>;
-}
-
-export interface MigrationInfo {
-  action: TableOperator;
-  table: string;
-  column: string;
-  config: ColumnSchema;
 }

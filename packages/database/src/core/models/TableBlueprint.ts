@@ -1,49 +1,50 @@
-import { ColumnsTypeConfig, ColumnSchema } from './types';
+import Schema from './Schema';
 
-type TableSchema = {
-  [column: string]: ColumnSchema[];
-};
+interface CreateAction {
+  type: 'create';
+  table: string;
+  payload: Schema;
+}
 
-type InfoBlueprint = {
-  [table: string]: TableSchema;
-};
+interface DropAction {
+  type: 'drop';
+  table: string;
+}
+
+interface AlterAction {
+  type: 'alter';
+  table: string;
+  payload: Schema;
+}
+
+type Action = CreateAction | DropAction | AlterAction;
 
 export default class TableBlueprint {
-  protected _info: InfoBlueprint = {};
-  protected _table = '';
-  protected _action = '';
+  private _actions: Action[] = [];
 
-  name(tableName: string) {
-    this._table = tableName;
-    return this;
-  }
-
-  column(columnName: string, value: ColumnsTypeConfig) {
-    const tableName = this._table;
-    const { index, ...config } = value.config;
-    if (!this._info[columnName]) {
-      this._info[columnName] = {};
-    }
-    if (!this._info[columnName][tableName]) {
-      this._info[columnName][tableName] = [];
-    }
-    const column = this._info[columnName][tableName];
-    if (index === 'auto') {
-      column.push(config);
-    } else {
-      column.splice(index, 0, config);
-    }
-    return this;
-  }
-
-  schema(data: { [column: string]: ColumnsTypeConfig }) {
-    Object.entries(data).forEach(([key, value]) => {
-      this.column(key, value);
+  create(table: string, schema: Schema) {
+    this._actions = this._actions.concat({
+      type: 'create',
+      table,
+      payload: schema,
     });
     return this;
   }
 
-  protected get config() {
-    return this._info;
+  alter(table: string, schema: Schema) {
+    this._actions = this._actions.concat({
+      type: 'alter',
+      table,
+      payload: schema,
+    });
+    return this;
+  }
+
+  drop(table: string) {
+    this._actions = this._actions.concat({
+      type: 'drop',
+      table,
+    });
+    return this;
   }
 }

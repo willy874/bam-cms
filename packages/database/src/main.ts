@@ -1,23 +1,28 @@
 import { DATABASE_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_USERNAME } from '@/constants';
-import { MysqlOperator, Migration, DataType } from '@/core';
+import { Migration, MysqlOperator, Schema, TableBlueprint } from '@/core';
+
+class TestMigration extends Migration {
+  name = 'test';
+  up(table: TableBlueprint): TableBlueprint {
+    return table.create(
+      this.name,
+      new Schema([
+        ['id', Schema.integer().autoIncrementing().primaryKey()],
+        ['name', Schema.string()],
+        ['age', Schema.integer()],
+        ['created_at', Schema.date().autoDefault()],
+        ['updated_at', Schema.date().autoDefault()],
+      ])
+    );
+  }
+  down(table: TableBlueprint): TableBlueprint {
+    return table.drop(this.name);
+  }
+}
 
 (async function () {
-  // class TestMigration extends Migration {
-  //   async up() {
-  //     await this.create('test', (table) => {
-  //       table.schema({
-  //         id: DataType.integer().autoIncrementing().primary(),
-  //         name: DataType.string(),
-  //         age: DataType.integer(),
-  //         created_at: DataType.date().autoDefault(),
-  //         updated_at: DataType.date().autoDefault(),
-  //       });
-  //     });
-  //   }
-  //   async down() {
-  //     await this.drop('test');
-  //   }
-  // }
+  [new TestMigration()].reduce((table, migration) => migration.up(table), new TableBlueprint());
+
   const operator = new MysqlOperator();
   operator.on('connect', () => console.log('connect'));
   await operator.connect({
