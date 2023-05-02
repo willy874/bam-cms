@@ -27,7 +27,8 @@ export const rollupOptions: { [k: string]: RollupOptions } = {
     output: [
       {
         file: 'index.js',
-        format: 'esm',
+        format: 'cjs',
+        exports: 'named',
       },
       {
         file: 'index.mjs',
