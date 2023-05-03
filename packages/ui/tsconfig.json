@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "commonjs",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["./packages/*"]
+    },
+    "types": ["node", "jest", "react", "react-dom", "webpack"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ScriptHost"]
+  },
+  "extends": "../../tsconfig.base.json",
+  "exclude": ["node_modules"],
+  "include": ["packages/**/*"],
+}

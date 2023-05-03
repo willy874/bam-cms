@@ -7,5 +7,42 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.21.4",
+    "@bam/builder": "workspace:*",
+    "@storybook/addon-actions": "^7.0.0-beta.20",
+    "@storybook/addon-essentials": "^7.0.0-rc.8",
+    "@storybook/addon-interactions": "^7.0.0-rc.8",
+    "@storybook/addon-links": "^7.0.0-rc.8",
+    "@storybook/blocks": "^7.0.0-rc.8",
+    "@storybook/react": "^7.0.0-rc.8",
+    "@storybook/react-webpack5": "^7.0.0-rc.8",
+    "@storybook/testing-library": "^0.0.14-next.1",
+    "@testing-library/dom": "~9.2.0",
+    "@testing-library/jest-dom": "~5.16.5",
+    "@testing-library/react": "~14.0.0",
+    "@testing-library/user-event": "~14.4.3",
+    "@types/jest": "^29.5.0",
+    "@types/react": "~18.0.28",
+    "@types/react-dom": "~18.0.11",
+    "@types/testing-library__jest-dom": "^5.14.5",
+    "@types/webpack": "~5.28.0",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "~5.56.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "~29.5.0",
+    "sass": "^1.60.0",
+    "sass-loader": "^13.2.1",
+    "storybook": "^7.0.0-rc.8",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "typescript-eslint": "0.0.1-alpha.0",
+    "webpack": "^5.78.0"
+  }
 }

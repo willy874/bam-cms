@@ -1,0 +1,7 @@
+{
+  "name": "pui-button",
+  "version": "0.0.1",
+  "description": "Pentium Network web components",
+  "main": "index.tsx",
+  "type": "module"
+}
