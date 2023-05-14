@@ -25,5 +25,4 @@ export interface Configuration {
 export interface WorkspaceInfo {
   name: string;
   main: string;
-  workspaces?: WorkspaceInfo[];
 }

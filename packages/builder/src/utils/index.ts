@@ -169,3 +169,14 @@ export function deepDirectory(
   };
   return walk(uri);
 }
+
+export function useOptions<T extends Record<string, any>>(init: T) {
+  const _options = init;
+  function setOption(options: Partial<T>) {
+    Object.assign(_options, options);
+  }
+  function getOption() {
+    return _options;
+  }
+  return { setOption, getOption };
+}

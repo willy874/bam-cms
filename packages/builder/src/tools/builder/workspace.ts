@@ -3,6 +3,7 @@ import path from 'node:path';
 import { yaml, minimatch } from '@/libs';
 import { isFile, isArray, pathResolve, getPackageJson, deepDirectory } from '@/utils';
 import type { Workspaces, WorkspaceInfo, PackageJson } from '@/types';
+import { getOption } from './options';
 
 async function packageMainPath(dir: string, main?: string | null): Promise<string> {
   if (main) {
@@ -19,22 +20,30 @@ async function packageMainPath(dir: string, main?: string | null): Promise<strin
   throw new Error("Can't find main file!");
 }
 
-async function toWorkspaceInfo(dir: string, packageJson: PackageJson): Promise<WorkspaceInfo> {
-  return {
-    name: packageJson.name || `${Date.now()}`,
-    main: await packageMainPath(dir, packageJson.main),
-    workspaces: packageJson.workspaces ? await getWorkspaceInfo(dir, packageJson.workspaces) : [],
-  };
+async function toWorkspaceInfo(dir: string, packageJson: PackageJson): Promise<WorkspaceInfo[]> {
+  const workspaces = packageJson.workspaces ? await getWorkspaceInfo(dir, packageJson.workspaces) : [];
+  return [
+    {
+      name: packageJson.name || `${Date.now()}`,
+      main: await packageMainPath(dir, packageJson.main),
+    },
+    ...workspaces.map((w) => {
+      return {
+        ...w,
+        name: `${packageJson.name}/${w.name}`,
+      };
+    }),
+  ];
 }
 
 async function resolveWorkspaces(src: string, workspaces: string[]): Promise<WorkspaceInfo[]> {
   const packages: Record<string, PackageJson> = {};
   await deepDirectory(src, async (dir) => {
-    if ([/node_modules$/].some((r) => r.test(dir))) return false;
+    const { ignore } = getOption();
+    if (ignore.some((r) => r.test(dir))) return false;
     const packagePath = path.join(dir, 'package.json');
     const packageJson = await getPackageJson(packagePath);
     const isMatch = workspaces.some(async (pattern) => {
-      console.log('isMatch', dir, minimatch(dir, path.join(src, pattern)));
       return minimatch(packagePath, path.join(src, pattern));
     });
     if (packageJson && isMatch) {
@@ -43,7 +52,8 @@ async function resolveWorkspaces(src: string, workspaces: string[]): Promise<Wor
     }
     return true;
   });
-  return Promise.all(Object.entries(packages).map((entry) => toWorkspaceInfo(...entry)));
+  const results = await Promise.all(Object.entries(packages).map((entry) => toWorkspaceInfo(...entry)));
+  return results.flat();
 }
 
 export async function getWorkspaces(src: string) {
@@ -62,7 +72,7 @@ export async function getWorkspaces(src: string) {
 export async function getWorkspaceInfo(src: string, configWorkspaces?: Workspaces) {
   const workspaces = configWorkspaces || (await getWorkspaces(src));
   if (typeof workspaces === 'undefined') {
-    const packageJson = await getPackageJson();
+    const packageJson = await getPackageJson(src);
     const info = {
       name: packageJson?.name || `${Date.now()}`,
       main: pathResolve(src, 'src/index.ts'),
