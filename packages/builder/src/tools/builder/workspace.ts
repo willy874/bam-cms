@@ -1,71 +1,81 @@
 import fs from 'node:fs';
-import { CWD } from '@/constants';
-import { isFile, isDirectory, isArray, pathResolve, getPackageJson } from '@/utils';
-import type { Workspaces, WorkspaceInfo } from '@/types';
+import path from 'node:path';
+import { yaml, minimatch } from '@/libs';
+import { isFile, isArray, pathResolve, getPackageJson, deepDirectory } from '@/utils';
+import type { Workspaces, WorkspaceInfo, PackageJson } from '@/types';
 
-async function packageMainPath(relativePaths: string): Promise<WorkspaceInfo | null> {
-  const absPath = pathResolve(CWD, relativePaths);
-  const packagePath = pathResolve(absPath, 'package.json');
-  const packageJson = await getPackageJson(packagePath);
-  if (packageJson) {
-    const mainPath = packageJson.main || 'index.js';
-    return {
-      name: packageJson.name || `${Date.now()}`,
-      main: pathResolve(absPath, mainPath as string),
-    };
+async function packageMainPath(dir: string, main?: string | null): Promise<string> {
+  if (main) {
+    return pathResolve(dir, main);
   }
-  const mainPath = pathResolve(absPath, 'main.ts');
+  const mainPath = pathResolve(dir, 'main.ts');
   if (isFile(mainPath)) {
-    return { name: 'main', main: mainPath };
+    return mainPath;
   }
-  const indexPath = pathResolve(absPath, 'index.ts');
+  const indexPath = pathResolve(dir, 'index.ts');
   if (isFile(indexPath)) {
-    return { name: 'index', main: indexPath };
+    return indexPath;
   }
-  return null;
+  throw new Error("Can't find main file!");
 }
 
-async function recursivePaths(path: string): Promise<WorkspaceInfo[]> {
-  const paths = path.split('/').filter(Boolean);
-  const absPath = pathResolve(CWD, ...paths);
-  const mainPath = await packageMainPath(path);
-  if (mainPath) return [mainPath];
-  const files = await fs.promises.readdir(absPath).catch(() => []);
-  const folders = files.map((p) => `${paths.join('/')}/${p}`).filter((p) => isDirectory(pathResolve(CWD, p)));
-  const f = await Promise.all(folders.map((p) => recursivePaths(p)));
-  return f.flat();
+async function toWorkspaceInfo(dir: string, packageJson: PackageJson): Promise<WorkspaceInfo> {
+  return {
+    name: packageJson.name || `${Date.now()}`,
+    main: await packageMainPath(dir, packageJson.main),
+    workspaces: packageJson.workspaces ? await getWorkspaceInfo(dir, packageJson.workspaces) : [],
+  };
 }
 
-async function resolveWorkspaces(workspaces: string[]): Promise<WorkspaceInfo[]> {
-  const workspacesPath = await Promise.all(
-    workspaces.map(async (p) => {
-      if (/\/\*$/.test(p)) {
-        return await recursivePaths(p.replace(/\/(\*)+$/, ''));
-      } else {
-        const mainPath = await packageMainPath(p);
-        if (mainPath) return [mainPath];
-        return [];
-      }
-    })
-  );
-  return workspacesPath.flat();
+async function resolveWorkspaces(src: string, workspaces: string[]): Promise<WorkspaceInfo[]> {
+  const packages: Record<string, PackageJson> = {};
+  await deepDirectory(src, async (dir) => {
+    if ([/node_modules$/].some((r) => r.test(dir))) return false;
+    const packagePath = path.join(dir, 'package.json');
+    const packageJson = await getPackageJson(packagePath);
+    const isMatch = workspaces.some(async (pattern) => {
+      console.log('isMatch', dir, minimatch(dir, path.join(src, pattern)));
+      return minimatch(packagePath, path.join(src, pattern));
+    });
+    if (packageJson && isMatch) {
+      packages[dir] = packageJson;
+      return false;
+    }
+    return true;
+  });
+  return Promise.all(Object.entries(packages).map((entry) => toWorkspaceInfo(...entry)));
 }
 
-export async function getWorkspaces(configWorkspaces?: Workspaces) {
-  const packageJson = await getPackageJson();
-  const workspaces =
-    packageJson && 'workspaces' in packageJson ? (packageJson.workspaces as Workspaces) : configWorkspaces;
+export async function getWorkspaces(src: string) {
+  const packageJson = await getPackageJson(src);
+  if (isFile(pathResolve(src, 'pnpm-lock.yaml'))) {
+    const file = fs.readFileSync(pathResolve(src, 'pnpm-workspace.yaml'), 'utf8');
+    const pnpmWorkspace: { packages: string[] } = yaml.parse(file);
+    return pnpmWorkspace.packages;
+  }
+  if (packageJson && 'workspaces' in packageJson) {
+    return packageJson.workspaces;
+  }
+  return [];
+}
+
+export async function getWorkspaceInfo(src: string, configWorkspaces?: Workspaces) {
+  const workspaces = configWorkspaces || (await getWorkspaces(src));
   if (typeof workspaces === 'undefined') {
-    return resolveWorkspaces(['src']);
+    const packageJson = await getPackageJson();
+    const info = {
+      name: packageJson?.name || `${Date.now()}`,
+      main: pathResolve(src, 'src/index.ts'),
+    };
+    return Promise.resolve([info]);
   }
   if (typeof workspaces === 'string') {
-    return resolveWorkspaces([workspaces]);
+    return resolveWorkspaces(src, [workspaces]);
   }
   if (isArray(workspaces)) {
-    return resolveWorkspaces(workspaces);
+    return resolveWorkspaces(src, workspaces);
   }
   const nohoist = workspaces.nohoist || [];
-  const w = await resolveWorkspaces(workspaces.packages || []);
-  const regexp = new RegExp(nohoist.join('|'));
-  return w.filter((w) => !regexp.test(w.main));
+  const w = await resolveWorkspaces(src, workspaces.packages || []);
+  return w.filter((w) => !nohoist.some((p) => w.main && minimatch(w.main, pathResolve(p))));
 }

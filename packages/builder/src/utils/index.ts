@@ -150,3 +150,22 @@ export async function getTsConfig(p = CWD): Promise<null | Tsconfig> {
   }
   return null;
 }
+
+export function deepDirectory(
+  uri: string,
+  callback?: (path: string) => Promise<boolean | void> | boolean | void
+): Promise<string[]> {
+  if (!isDirectory(uri)) throw new Error(`The path ${uri} is not a directory!`);
+  const walk = async (dir: string): Promise<string[]> => {
+    const files = await fs.promises.readdir(dir);
+    const promises = files.map(async (file) => {
+      const fullPath = path.join(dir, file);
+      if ((await callback?.(fullPath)) === false) return [];
+      if (isDirectory(fullPath)) return await walk(fullPath);
+      return [];
+    });
+    const paths = await Promise.all(promises);
+    return paths.flat();
+  };
+  return walk(uri);
+}

@@ -1,6 +1,7 @@
 import { isArray, pathResolve, asArray, getTsConfig } from '@/utils';
-import { getWorkspaces } from './workspace';
+import { getWorkspaceInfo } from './workspace';
 import type { RollupOptions, Configuration, RollupExportOption, WorkspaceInfo, RollupOptionsFunction } from '@/types';
+import { CWD } from '@/constants';
 
 async function assignRollupOutput(
   name: string,
@@ -57,7 +58,7 @@ async function getRollupOptions(options: RollupExportOption, args: Record<string
 
 export function componentBuilder(config: Configuration): RollupOptionsFunction {
   return async (commandLineArguments: Record<string, any>) => {
-    const workspaces = await getWorkspaces(config.workspaces);
+    const workspaces = await getWorkspaceInfo(CWD, config.workspaces);
     const rollupOptions = await getRollupOptions(config.rollup, commandLineArguments);
     const result = await assignWorkspaces(rollupOptions, workspaces);
     return result;
