@@ -1,14 +1,30 @@
 {
   "name": "@bam/builder",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.mjs",
+  "types": "./dist/types.d.ts",
+  "typesVersions": {
+    ">=0.0.0": {
+      "*": [
+        "./dist/types.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    "module": "./dist/index.mjs",
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs",
+    "script": "./dist/index.js",
+    "types": "./dist/types.d.ts"
+  },
+  "sideEffects": false,
   "scripts": {
     "build": "rollup -c",
     "test:unit": "jest",
     "test:coverage": "jest --config ./jest.config.js --coverage"
   },
-  "author": "",
+  "author": "willy874",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "~7.21.4",
@@ -30,7 +46,6 @@
     "jest": "~29.5.0",
     "minimatch": "^9.0.0",
     "postcss": "^8.4.23",
-    "rollup": "~3.18.0",
     "rollup-plugin-dts": "~5.2.0",
     "rollup-plugin-esbuild": "~5.0.0",
     "rollup-plugin-peer-deps-external": "~2.2.4",

@@ -5,7 +5,6 @@ describe('workspace', () => {
   it('getWorkspaceInfo', async () => {
     const cwd = path.join(process.cwd(), '../../');
     const workspaces = await getWorkspaceInfo(cwd);
-    // console.log(workspaces);
     const received = workspaces.length;
     const expected = 10;
     expect(received).toBe(expected);
