@@ -13,9 +13,5 @@ export default async (...args) => {
   const options = await componentBuilder({
     rollup: [rollupOptions.base, rollupOptions.dts],
   });
-  const r = await options(...args);
-  console.log(r);
-  console.log('output');
-  console.log(r.map((p) => p.output));
-  return r;
+  return options(...args);
 };
