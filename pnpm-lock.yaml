@@ -251,6 +251,112 @@ importers:
         specifier: ^2.0.22
         version: 2.0.22
 
+  packages/react-ui:
+    dependencies:
+      classnames:
+        specifier: ^2.2.6
+        version: 2.2.6
+      csstype:
+        specifier: ^3.1.2
+        version: 3.1.2
+      react:
+        specifier: ~18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ~18.2.0
+        version: 18.2.0(react@18.2.0)
+    devDependencies:
+      '@babel/core':
+        specifier: ~7.21.4
+        version: 7.21.4
+      '@bam/builder':
+        specifier: workspace:*
+        version: link:../builder
+      '@storybook/addon-actions':
+        specifier: ^7.0.0-beta.20
+        version: 7.0.0-rc.8(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-essentials':
+        specifier: ^7.0.0-rc.8
+        version: 7.0.0-rc.8(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-interactions':
+        specifier: ^7.0.0-rc.8
+        version: 7.0.0-rc.8(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/addon-links':
+        specifier: ^7.0.0-rc.8
+        version: 7.0.0-rc.8(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/blocks':
+        specifier: ^7.0.0-rc.8
+        version: 7.0.0-rc.8(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/react':
+        specifier: ^7.0.0-rc.8
+        version: 7.0.0-rc.8(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)
+      '@storybook/react-webpack5':
+        specifier: ^7.0.0-rc.8
+        version: 7.0.0-rc.8(@babel/core@7.21.4)(@types/webpack@5.28.0)(esbuild@0.17.11)(react-dom@18.2.0)(react@18.2.0)(typescript@4.9.5)
+      '@storybook/testing-library':
+        specifier: ^0.0.14-next.1
+        version: 0.0.14-next.1
+      '@testing-library/dom':
+        specifier: ~9.2.0
+        version: 9.2.0
+      '@testing-library/jest-dom':
+        specifier: ~5.16.5
+        version: 5.16.5
+      '@testing-library/react':
+        specifier: ~14.0.0
+        version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
+      '@testing-library/user-event':
+        specifier: ~14.4.3
+        version: 14.4.3(@testing-library/dom@9.2.0)
+      '@types/jest':
+        specifier: ^29.5.0
+        version: 29.5.0
+      '@types/react':
+        specifier: ~18.0.28
+        version: 18.0.28
+      '@types/react-dom':
+        specifier: ~18.0.11
+        version: 18.0.11
+      '@types/testing-library__jest-dom':
+        specifier: ^5.14.5
+        version: 5.14.5
+      '@types/webpack':
+        specifier: ~5.28.0
+        version: 5.28.0(esbuild@0.17.11)
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^5.56.0
+        version: 5.56.0(@typescript-eslint/parser@5.56.0)(eslint@8.36.0)(typescript@4.9.5)
+      '@typescript-eslint/parser':
+        specifier: ~5.56.0
+        version: 5.56.0(eslint@8.36.0)(typescript@4.9.5)
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
+      jest:
+        specifier: ~29.5.0
+        version: 29.5.0(@types/node@18.15.6)(ts-node@10.9.1)
+      sass:
+        specifier: ^1.60.0
+        version: 1.62.1
+      sass-loader:
+        specifier: ^13.2.1
+        version: 13.2.2(sass@1.62.1)(webpack@5.81.0)
+      storybook:
+        specifier: ^7.0.0-rc.8
+        version: 7.0.0-rc.8
+      ts-loader:
+        specifier: ^9.4.2
+        version: 9.4.2(typescript@4.9.5)(webpack@5.81.0)
+      typescript:
+        specifier: ^4.9.5
+        version: 4.9.5
+      typescript-eslint:
+        specifier: 0.0.1-alpha.0
+        version: 0.0.1-alpha.0
+      webpack:
+        specifier: ^5.78.0
+        version: 5.81.0(esbuild@0.17.11)
+
   packages/tools: {}
 
   packages/ui:
@@ -3234,12 +3340,12 @@ packages:
       telejson: 7.1.0
     dev: true
 
-  /@storybook/channel-postmessage@7.0.11:
-    resolution: {integrity: sha512-6ARow3o2thnXLO4i3+tluHAPqqSrB30U/Oxg3JqC5/2FJin3UFBOMCj04V7FPUN8jQfZpERoYgiUYE9JddT39g==}
+  /@storybook/channel-postmessage@7.0.12:
+    resolution: {integrity: sha512-Tc7kQZ5yxlZ44Nmmzec92JaDJ6UZ3Ze4cBfiHik4XcnM1PtN8hr8VFoC6a2AIm1ybfIRenfT5w9TH5yriiPIhw==}
     dependencies:
-      '@storybook/channels': 7.0.11
-      '@storybook/client-logger': 7.0.11
-      '@storybook/core-events': 7.0.11
+      '@storybook/channels': 7.0.12
+      '@storybook/client-logger': 7.0.12
+      '@storybook/core-events': 7.0.12
       '@storybook/global': 5.0.0
       qs: 6.11.1
       telejson: 7.1.0
@@ -3262,8 +3368,8 @@ packages:
     resolution: {integrity: sha512-2tI/ECbQcXjncYGLVdrttNT8adIp6kV/bnQGJWmF5hBXZ7Izwyq1WRPTgPT++RihmOOTHvkRx4GCKfwluOrNpA==}
     dev: true
 
-  /@storybook/channels@7.0.11:
-    resolution: {integrity: sha512-1cVgju7ViN7GDeUNUS5hp3GZLT2EgxgXj7zuGbCZwsF8lFsM0IWeXma8TV0UfcBiyQjP4edYRmUn0vy6CMc/WA==}
+  /@storybook/channels@7.0.12:
+    resolution: {integrity: sha512-KDdDmDs8kxAJU+vndTqTNazjLO+XoIPiTRlfP7mk7cgHiQXSjMYy3JSCQ7W0of0Q+9VSl/ve9CNbnGbcQF7rNQ==}
     dev: true
 
   /@storybook/cli@7.0.0-rc.8:
@@ -3334,8 +3440,8 @@ packages:
       '@storybook/global': 5.0.0
     dev: true
 
-  /@storybook/client-logger@7.0.11:
-    resolution: {integrity: sha512-3p+vXogcwPI9/9PgjqhJSzJsbcJUnvVyZ4rM4sQhwbXQkMjwl2j/LjI86zuYbQe9yQpKND1Yc4HPJd24225H/Q==}
+  /@storybook/client-logger@7.0.12:
+    resolution: {integrity: sha512-MQMtIgGEgdixvxnBvZ2m8hhc0DGJWeCpHtxg7oqBLBEBmCYFueTqDZHl4Z6SoCrK0a2YS5X/BIXOcEtP1ulMKw==}
     dependencies:
       '@storybook/global': 5.0.0
     dev: true
@@ -3439,8 +3545,8 @@ packages:
     resolution: {integrity: sha512-KsKf+Ob6zQ8+IJ9oDD5xqASwYGzcjT08azBjSt4yocHIJ3mY741h88YDS0wcwnM+JrV6iFYlY0hiK35lnBEddA==}
     dev: true
 
-  /@storybook/core-events@7.0.11:
-    resolution: {integrity: sha512-azEjQMpMx61h4o11OV8l78ab6Jxiwc5nlbqEUa1FVCupyRKFxrbK7zovmWyVL3cTllCSiJf4v3o/MadtuH4lcw==}
+  /@storybook/core-events@7.0.12:
+    resolution: {integrity: sha512-VTmb/zjbz3o1bg+bATzLigVXMVDC/S1FP8CqIrz4mkiys52139FGzMandL2Y2AecPZPGss7ZRdfma28HKVYTRg==}
     dev: true
 
   /@storybook/core-server@7.0.0-rc.8:
@@ -3577,14 +3683,14 @@ packages:
       '@storybook/preview-api': 7.0.0-rc.8
     dev: true
 
-  /@storybook/instrumenter@7.0.11:
-    resolution: {integrity: sha512-sBwV0AGN2DrJTMWGRZHU/HvjRFF0HJ1ynnwnVqT2n1q2oi/8Xa3xYit5bvcyMGStnXdfo38nRKuKZQ6UrNXEug==}
+  /@storybook/instrumenter@7.0.12:
+    resolution: {integrity: sha512-jx4rb4AMT1YIOpE0HCdfyLvpYU+94wPkC9vt7sZGWAp7nnYG+KO/lx3XCJaR9qQPIxVYejJtWkeGn4RID79SoQ==}
     dependencies:
-      '@storybook/channels': 7.0.11
-      '@storybook/client-logger': 7.0.11
-      '@storybook/core-events': 7.0.11
+      '@storybook/channels': 7.0.12
+      '@storybook/client-logger': 7.0.12
+      '@storybook/core-events': 7.0.12
       '@storybook/global': 5.0.0
-      '@storybook/preview-api': 7.0.11
+      '@storybook/preview-api': 7.0.12
     dev: true
 
   /@storybook/manager-api@7.0.0-beta.20(react-dom@18.2.0)(react@18.2.0):
@@ -3752,16 +3858,16 @@ packages:
       util-deprecate: 1.0.2
     dev: true
 
-  /@storybook/preview-api@7.0.11:
-    resolution: {integrity: sha512-w86kKnoH46xmhoi+i0V2bPiuoKnjUhEtSHXtIOEM+gJCfrKECWzrlDVCu+fh2xv38uf7zrJcQSJg9Vmpsmiasw==}
+  /@storybook/preview-api@7.0.12:
+    resolution: {integrity: sha512-YI/AfHszIOYt967fsRlc7j6I0zZB+RSsBwD/nMA8y9vszdpQ0MgRhxHgQxFf6cgqbuQcdCsnTIpT0iQ4GHjDXg==}
     dependencies:
-      '@storybook/channel-postmessage': 7.0.11
-      '@storybook/channels': 7.0.11
-      '@storybook/client-logger': 7.0.11
-      '@storybook/core-events': 7.0.11
+      '@storybook/channel-postmessage': 7.0.12
+      '@storybook/channels': 7.0.12
+      '@storybook/client-logger': 7.0.12
+      '@storybook/core-events': 7.0.12
       '@storybook/csf': 0.1.0
       '@storybook/global': 5.0.0
-      '@storybook/types': 7.0.11
+      '@storybook/types': 7.0.12
       '@types/qs': 6.9.7
       dequal: 2.0.3
       lodash: 4.17.21
@@ -3934,8 +4040,8 @@ packages:
   /@storybook/testing-library@0.0.14-next.1:
     resolution: {integrity: sha512-1CAl40IKIhcPaCC4pYCG0b9IiYNymktfV/jTrX7ctquRY3akaN7f4A1SippVHosksft0M+rQTFE0ccfWW581fw==}
     dependencies:
-      '@storybook/client-logger': 7.0.11
-      '@storybook/instrumenter': 7.0.11
+      '@storybook/client-logger': 7.0.12
+      '@storybook/instrumenter': 7.0.12
       '@testing-library/dom': 8.20.0
       '@testing-library/user-event': 13.5.0(@testing-library/dom@8.20.0)
       ts-dedent: 2.2.0
@@ -3991,10 +4097,10 @@ packages:
       file-system-cache: 2.1.1
     dev: true
 
-  /@storybook/types@7.0.11:
-    resolution: {integrity: sha512-VOnef/u/HvYbk6LxWkwMlu31VD1ly6BTyHDOMUfYas03uNflX1KldGooWphmXVFrkkoLJoF5V4wsTShHSizi2A==}
+  /@storybook/types@7.0.12:
+    resolution: {integrity: sha512-nlvU4MyO2grwPCRQ8alA3AnY1bQxGJ6A4QgJu+1MhtjVenifFlxOQX4H1OiA+YXfjlV096oO5LrxvetJPFAKKQ==}
     dependencies:
-      '@storybook/channels': 7.0.11
+      '@storybook/channels': 7.0.12
       '@types/babel__core': 7.20.0
       '@types/express': 4.17.17
       file-system-cache: 2.1.1
@@ -12005,6 +12111,7 @@ packages:
 
   /uuid-browser@3.1.0:
     resolution: {integrity: sha512-dsNgbLaTrd6l3MMxTtouOCFw4CBFc/3a+GgYA2YyrJvyQ1u6q4pcu3ktLoUZ/VN/Aw9WsauazbgsgdfVWgAKQg==}
+    deprecated: Package no longer supported and required. Use the uuid package or crypto.randomUUID instead
     dev: true
 
   /v8-compile-cache-lib@3.0.1:

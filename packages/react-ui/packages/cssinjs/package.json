@@ -1,0 +1,7 @@
+{
+  "name": "bam-cssinjs",
+  "version": "0.0.1",
+  "description": "Pentium Network web components",
+  "main": "src/index.ts",
+  "type": "module"
+}
