@@ -8,8 +8,6 @@ export interface ContainerOperationOptions {
   mark: string;
 }
 
-// type DesignToken = Record<string, string>;
-
 type ContainerType = Element | DocumentFragment;
 
 const isStyleElement = (node: Node): node is HTMLStyleElement => {
@@ -18,6 +16,7 @@ const isStyleElement = (node: Node): node is HTMLStyleElement => {
 
 export class DynamicCSSOperator {
   getContainer: () => ContainerType;
+  caches = new Map();
 
   constructor(getContainer: () => ContainerType = () => document.head) {
     this.getContainer = getContainer;
