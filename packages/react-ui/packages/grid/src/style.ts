@@ -1,55 +1,50 @@
 import { DesignToken, CssObject } from '@/cssinjs';
 import { merge } from './libs';
-
-function keyOf<T extends Record<string, unknown>>(value: T): (keyof T)[] {
-  return Object.keys(value) as (keyof T)[];
-}
-function toNumberArray(value: number): number[] {
-  return Array.from({ length: value }, (_, index) => index);
-}
+import { keyOf, fromNumberArray } from './utils';
 
 function getRowStyle(token: DesignToken) {
   const { media } = token;
   return keyOf(media).reduce<CssObject>((acc, device) => {
     const deviceSize = media[device];
+    const deviceClass = deviceSize ? `-${device}` : '';
     const cssProperties = {
-      [`.flex-${device}-wrap`]: {
+      [`.flex${deviceClass}-wrap`]: {
         flexWrap: 'wrap',
       },
-      [`.flex-${device}-nowrap`]: {
+      [`.flex${deviceClass}-nowrap`]: {
         flexWrap: 'nowrap',
       },
-      [`.flex-${device}-column`]: {
+      [`.flex${deviceClass}-column`]: {
         flexDirection: 'column',
       },
-      [`.flex-${device}-row`]: {
+      [`.flex${deviceClass}-row`]: {
         flexDirection: 'row',
       },
-      [`.align-${device}-center`]: {
+      [`.align${deviceClass}-center`]: {
         alignItems: 'center',
       },
-      [`.align-${device}-start`]: {
+      [`.align${deviceClass}-start`]: {
         alignItems: 'flex-start',
       },
-      [`.align-${device}-end`]: {
+      [`.align${deviceClass}-end`]: {
         alignItems: 'flex-end',
       },
-      [`.justify-${device}-center`]: {
+      [`.justify${deviceClass}-center`]: {
         justifyContent: 'center',
       },
-      [`.justify-${device}-start`]: {
+      [`.justify${deviceClass}-start`]: {
         justifyContent: 'flex-start',
       },
-      [`.justify-${device}-end`]: {
+      [`.justify${deviceClass}-end`]: {
         justifyContent: 'flex-end',
       },
-      [`.justify-${device}-around`]: {
+      [`.justify${deviceClass}-around`]: {
         justifyContent: 'space-around',
       },
-      [`.justify-${device}-between`]: {
+      [`.justify${deviceClass}-between`]: {
         justifyContent: 'space-between',
       },
-      [`.justify-${device}-evenly`]: {
+      [`.justify${deviceClass}-evenly`]: {
         justifyContent: 'space-evenly',
       },
     };
@@ -63,54 +58,55 @@ function getRowStyle(token: DesignToken) {
 
 function getColStyle(token: DesignToken) {
   const { column, media } = token;
-  return toNumberArray(column).reduce<CssObject>((acc, i) => {
-    if (i === 0) {
-      const colBaseStyle = keyOf(media).reduce<CssObject>((acc, device) => {
-        const deviceSize = media[device];
-        const cssProperties = {
-          [`.self-${device}-center`]: {
+  return keyOf(media).reduce<CssObject>((acc, device) => {
+    const deviceSize = media[device];
+    const deviceClass = deviceSize ? `-${device}` : '';
+    const cssProperties = fromNumberArray(column).reduce<CssObject>((acc, i) => {
+      if (i === 0) {
+        return {
+          ...acc,
+          [`.self${deviceClass}-center`]: {
             alignSelf: 'center',
           },
-          [`.self-${device}-start`]: {
+          [`.self${deviceClass}-start`]: {
             alignSelf: 'self-start',
           },
-          [`.self-${device}-end`]: {
+          [`.self${deviceClass}-end`]: {
             alignSelf: 'self-end',
           },
         };
-        if (deviceSize) {
-          return { ...acc, [`@media (min-width: ${deviceSize}px)`]: cssProperties };
-        } else {
-          return { ...acc, ...cssProperties };
-        }
-      }, {});
-      return { ...acc, ...colBaseStyle };
+      } else {
+        const width = (i / column) * 100;
+        return {
+          ...acc,
+          [`.col${deviceClass}-${i}`]: {
+            flexBasis: `${width}%`,
+            maxWidth: `${width}%`,
+          },
+          [`.grow${deviceClass}-${i}`]: {
+            flexGrow: i,
+          },
+          [`.shrink${deviceClass}-${i}`]: {
+            flexShrink: i,
+          },
+          [`.order${deviceClass}-${i}`]: {
+            order: i,
+          },
+          [`.offset${deviceClass}-${i}`]: {
+            marginLeft: `${width}%`,
+          },
+          [`.push${deviceClass}-${i}`]: {
+            insetInlineStart: `${width}%`,
+          },
+          [`.pull${deviceClass}-${i}`]: {
+            insetInlineEnd: `${width}%`,
+          },
+        };
+      }
+    }, {});
+    if (deviceSize) {
+      return { ...acc, [`@media (min-width: ${deviceSize}px)`]: cssProperties };
     } else {
-      const width = (i / column) * 100;
-      const cssProperties = {
-        [`.col-${i}`]: {
-          flexBasis: `${width}%`,
-          maxWidth: `${width}%`,
-        },
-        [`.grow-${i}`]: {
-          flexGrow: i,
-        },
-        [`.shrink-${i}`]: {
-          flexShrink: i,
-        },
-        [`.order-${i}`]: {
-          order: i,
-        },
-        [`.offset-${i}`]: {
-          marginLeft: `${width}%`,
-        },
-        [`.push-${i}`]: {
-          insetInlineStart: `${width}%`,
-        },
-        [`.pull-${i}`]: {
-          insetInlineEnd: `${width}%`,
-        },
-      };
       return { ...acc, ...cssProperties };
     }
   }, {});

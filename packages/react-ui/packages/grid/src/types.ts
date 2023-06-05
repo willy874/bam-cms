@@ -6,15 +6,14 @@ export type BaseProps<T = HTMLDivElement> = React.HTMLAttributes<T> & {
 
 export interface BaseGridProps {
   span?: number;
-  offset?: React.CSSProperties['marginLeft'];
-  order?: React.CSSProperties['order'];
-  grow?: React.CSSProperties['flexGrow'];
-  shrink?: React.CSSProperties['flexShrink'];
-  direction?: React.CSSProperties['flexDirection'];
-  wrap?: React.CSSProperties['flexWrap'];
-  align?: React.CSSProperties['alignItems'];
-  justify?: React.CSSProperties['justifyContent'];
-  gap?: React.CSSProperties['gap'];
+  offset?: number;
+  order?: number;
+  grow?: number;
+  shrink?: number;
+  direction?: 'column' | 'row';
+  wrap?: 'wrap' | 'nowrap';
+  align?: 'center' | 'end' | 'start';
+  justify?: 'around' | 'between' | 'evenly' | 'center' | 'end' | 'start';
 }
 
 export type GridProps = BaseProps &

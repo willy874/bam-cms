@@ -85,6 +85,7 @@ export class DynamicCSSOperator {
       }
       return existNode;
     }
+    console.log('css', key, css);
     return this.injectCSS(css, {
       ...options,
       mark: key,
