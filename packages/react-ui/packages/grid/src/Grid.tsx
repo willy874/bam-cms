@@ -70,7 +70,7 @@ const Grid: React.ForwardRefRenderFunction<HTMLDivElement, GridProps> = function
   }, new Set());
   useStyle('Grid', getGridStyle);
   return (
-    <div className={cn('d-flex', ...gridClassNames, classNames)} ref={ref} {...attrs}>
+    <div className={cn('bam-grid', 'd-flex', ...gridClassNames, classNames)} ref={ref} {...attrs}>
       {children}
     </div>
   );
