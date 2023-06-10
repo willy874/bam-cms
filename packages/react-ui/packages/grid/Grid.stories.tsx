@@ -21,5 +21,22 @@ type Story = StoryObj<typeof Grid>;
  * to learn how to use render functions.
  */
 export const Primary: Story = {
-  render: () => <Grid />,
+  render: () => (
+    <Grid>
+      <Grid span={6} />
+      <Grid sm={{ span: 1 }} />
+      <Grid md={{ span: 2 }} />
+      <Grid lg={{ span: 3 }} />
+      <Grid xl={{ span: 4 }} />
+      <Grid xxl={{ span: 5 }} />
+      <Grid span={12} />
+      <Grid shrink={1} />
+      <Grid grow={2} />
+      <Grid offset={3} />
+      <Grid direction={'column'} />
+      <Grid wrap={'wrap'} />
+      <Grid justify={'center'} />
+      <Grid align={'center'} />
+    </Grid>
+  ),
 };

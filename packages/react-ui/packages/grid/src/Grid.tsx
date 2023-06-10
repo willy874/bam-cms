@@ -9,8 +9,9 @@ const resolveGrid = (props?: Partial<BaseGridProps>): BaseGridProps | null => {
   if (!props) {
     return null;
   }
-  const { span, offset, order, grow, shrink, direction, wrap } = props;
+  const { display, span, offset, order, grow, shrink, direction, wrap } = props;
   return {
+    display,
     span,
     offset,
     order,
@@ -33,8 +34,11 @@ const Grid: React.ForwardRefRenderFunction<HTMLDivElement, GridProps> = function
     xxl: resolveGrid(xxl),
   };
   const gridClassNames = keyOf(media).reduce<Set<string>>((acc, key) => {
-    const { span, offset, order, grow, shrink, direction, wrap, align, justify } = media[key] || {};
+    const { display, span, offset, order, grow, shrink, direction, wrap, align, justify } = media[key] || {};
     const device = key === 'default' ? '' : `-${key}`;
+    if (isNotNull(display)) {
+      acc.add(`d${device}-${display}`);
+    }
     if (isNotNull(span)) {
       acc.add(`col${device}-${span}`);
     }
@@ -66,7 +70,7 @@ const Grid: React.ForwardRefRenderFunction<HTMLDivElement, GridProps> = function
   }, new Set());
   useStyle('Grid', getGridStyle);
   return (
-    <div className={cn(...gridClassNames, classNames)} ref={ref} {...attrs}>
+    <div className={cn('d-flex', ...gridClassNames, classNames)} ref={ref} {...attrs}>
       {children}
     </div>
   );

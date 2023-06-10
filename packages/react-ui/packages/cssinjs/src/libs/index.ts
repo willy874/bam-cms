@@ -1,1 +1,1 @@
-export { merge } from 'lodash';
+export { merge, kebabCase } from 'lodash';

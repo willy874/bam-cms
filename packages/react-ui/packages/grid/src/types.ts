@@ -5,6 +5,7 @@ export type BaseProps<T = HTMLDivElement> = React.HTMLAttributes<T> & {
 };
 
 export interface BaseGridProps {
+  display?: 'flex' | 'inline-flex' | 'block' | 'inline-block' | 'none';
   span?: number;
   offset?: number;
   order?: number;

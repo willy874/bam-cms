@@ -8,6 +8,24 @@ function getRowStyle(token: DesignToken) {
     const deviceSize = media[device];
     const deviceClass = deviceSize ? `-${device}` : '';
     const cssProperties = {
+      [`.d${deviceClass}-block`]: {
+        display: 'block',
+      },
+      [`.d${deviceClass}-inline-block`]: {
+        display: 'inline-block',
+      },
+      [`.d${deviceClass}-none`]: {
+        display: 'none',
+      },
+      [`.d${deviceClass}-flex`]: {
+        display: 'flex',
+      },
+      [`.d${deviceClass}-inline-flex`]: {
+        display: 'inline-flex',
+      },
+      [`.d${deviceClass}-black`]: {
+        display: 'flex',
+      },
       [`.flex${deviceClass}-wrap`]: {
         flexWrap: 'wrap',
       },

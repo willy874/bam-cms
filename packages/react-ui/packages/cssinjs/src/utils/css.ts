@@ -1,3 +1,5 @@
+import { kebabCase } from '../libs';
+
 export function cssParse(css: string) {
   const cssText = css.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '');
   const cssObj: Record<string, Record<string, string>> = {};
@@ -40,7 +42,7 @@ export function cssStringify(css: CSSInterpolation) {
     } else {
       const valueArr: string[] = [];
       Object.entries(value).forEach(([k, v]) => {
-        valueArr.push(`${k}: ${v}`);
+        valueArr.push(`${kebabCase(k)}: ${v}`);
       });
       cssArr.push(`${key} { ${valueArr.join(';\n ')} }`);
     }
