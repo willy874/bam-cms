@@ -4,7 +4,7 @@ export type BaseProps<T = HTMLDivElement> = React.HTMLAttributes<T> & {
   classNames?: string | string[] | Record<string, boolean>;
 };
 
-export interface BaseGridProps {
+export interface BaseFlexProps {
   display?: 'flex' | 'inline-flex' | 'block' | 'inline-block' | 'none';
   span?: number;
   offset?: number;
@@ -17,7 +17,7 @@ export interface BaseGridProps {
   justify?: 'around' | 'between' | 'evenly' | 'center' | 'end' | 'start';
 }
 
-export type GridProps = BaseProps &
-  BaseGridProps & {
-    [Lowercase in MediaType]?: BaseGridProps;
+export type FlexProps = BaseProps &
+  BaseFlexProps & {
+    [Lowercase in MediaType]?: BaseFlexProps;
   };

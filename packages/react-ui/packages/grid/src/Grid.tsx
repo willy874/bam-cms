@@ -1,11 +1,11 @@
 import React from 'react';
 import cn from 'classnames';
-import { BaseGridProps, GridProps } from './types';
+import { BaseFlexProps, FlexProps } from './types';
 import { useStyle } from '@/cssinjs';
-import { getGridStyle } from './style';
+import { getStyle } from './style';
 import { isNotNull, keyOf, omit } from './utils';
 
-const resolveGrid = (props?: Partial<BaseGridProps>): BaseGridProps | null => {
+const resolveFlex = (props?: Partial<BaseFlexProps>): BaseFlexProps | null => {
   if (!props) {
     return null;
   }
@@ -22,19 +22,19 @@ const resolveGrid = (props?: Partial<BaseGridProps>): BaseGridProps | null => {
   };
 };
 
-const Grid: React.ForwardRefRenderFunction<HTMLDivElement, GridProps> = function (props, ref) {
+const Flex: React.ForwardRefRenderFunction<HTMLDivElement, FlexProps> = function (props, ref) {
   const { classNames, children, xs, sm, md, lg, xl, xxl, ...$attrs } = props;
   const attrs = omit($attrs, ['display', 'span', 'offset', 'order', 'grow', 'shrink', 'direction', 'wrap']);
   const media = {
-    default: resolveGrid(props),
-    xs: resolveGrid(xs),
-    sm: resolveGrid(sm),
-    md: resolveGrid(md),
-    lg: resolveGrid(lg),
-    xl: resolveGrid(xl),
-    xxl: resolveGrid(xxl),
+    default: resolveFlex(props),
+    xs: resolveFlex(xs),
+    sm: resolveFlex(sm),
+    md: resolveFlex(md),
+    lg: resolveFlex(lg),
+    xl: resolveFlex(xl),
+    xxl: resolveFlex(xxl),
   };
-  const gridClassNames = keyOf(media).reduce<Set<string>>((acc, key) => {
+  const FlexClassNames = keyOf(media).reduce<Set<string>>((acc, key) => {
     const { display, span, offset, order, grow, shrink, direction, wrap, align, justify } = media[key] || {};
     const device = key === 'default' ? '' : `-${key}`;
     if (isNotNull(display)) {
@@ -69,14 +69,14 @@ const Grid: React.ForwardRefRenderFunction<HTMLDivElement, GridProps> = function
     }
     return acc;
   }, new Set());
-  useStyle('Grid', getGridStyle);
+  useStyle('Flex', getStyle);
   return (
-    <div className={cn('bam-grid', ...gridClassNames, classNames)} ref={ref} {...attrs}>
+    <div className={cn('bam-flex', ...FlexClassNames, classNames)} ref={ref} {...attrs}>
       {children}
     </div>
   );
 };
 
-type GridComponent = (props: Omit<GridProps, 'ref'> & { ref?: React.Ref<HTMLDivElement> }) => JSX.Element;
+type FlexComponent = (props: Omit<FlexProps, 'ref'> & { ref?: React.Ref<HTMLDivElement> }) => JSX.Element;
 
-export default React.memo(React.forwardRef(Grid)) as GridComponent;
+export default React.memo(React.forwardRef(Flex)) as FlexComponent;
