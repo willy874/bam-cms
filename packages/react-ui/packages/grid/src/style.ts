@@ -133,5 +133,10 @@ function getColStyle(token: DesignToken) {
 export function getGridStyle(token: DesignToken) {
   const rowStyle = getRowStyle(token);
   const colStyle = getColStyle(token);
-  return merge(rowStyle, colStyle);
+  const baseStyle = {
+    '.bam-grid': {
+      display: 'flex',
+    },
+  };
+  return merge(baseStyle, rowStyle, colStyle);
 }

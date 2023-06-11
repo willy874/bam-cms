@@ -9,3 +9,7 @@ export function fromNumberArray(value: number): number[] {
 export function isNotNull<T>(value: T | null | undefined): value is T {
   return value !== null && typeof value !== 'undefined';
 }
+
+export function omit<T extends Record<string, any>, K extends keyof T>(obj: T, keys: K[]) {
+  return Object.fromEntries(Object.entries(obj).filter(([key]) => !keys.includes(key as K))) as Omit<T, K>;
+}

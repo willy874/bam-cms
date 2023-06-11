@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { BaseGridProps, GridProps } from './types';
 import { useStyle } from '@/cssinjs';
 import { getGridStyle } from './style';
-import { isNotNull, keyOf } from './utils';
+import { isNotNull, keyOf, omit } from './utils';
 
 const resolveGrid = (props?: Partial<BaseGridProps>): BaseGridProps | null => {
   if (!props) {
@@ -23,7 +23,8 @@ const resolveGrid = (props?: Partial<BaseGridProps>): BaseGridProps | null => {
 };
 
 const Grid: React.ForwardRefRenderFunction<HTMLDivElement, GridProps> = function (props, ref) {
-  const { classNames, children, xs, sm, md, lg, xl, xxl, ...attrs } = props;
+  const { classNames, children, xs, sm, md, lg, xl, xxl, ...$attrs } = props;
+  const attrs = omit($attrs, ['display', 'span', 'offset', 'order', 'grow', 'shrink', 'direction', 'wrap']);
   const media = {
     default: resolveGrid(props),
     xs: resolveGrid(xs),
@@ -70,7 +71,7 @@ const Grid: React.ForwardRefRenderFunction<HTMLDivElement, GridProps> = function
   }, new Set());
   useStyle('Grid', getGridStyle);
   return (
-    <div className={cn('bam-grid', 'd-flex', ...gridClassNames, classNames)} ref={ref} {...attrs}>
+    <div className={cn('bam-grid', ...gridClassNames, classNames)} ref={ref} {...attrs}>
       {children}
     </div>
   );
